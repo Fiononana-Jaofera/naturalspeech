@@ -1,4 +1,5 @@
 from segments import Profile, Tokenizer
+import re
 
 prf = Profile(
     {'Grapheme': 'a', 'mapping': 'a'},
