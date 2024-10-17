@@ -24,14 +24,14 @@ if __name__ == "__main__":
         filepaths_and_text = load_filepaths_and_text(filelist)
         result = []
         for i in range(len(filepaths_and_text)):
-            if len(file_paths_and_text[i])<2:
+            if len(filepaths_and_text[i])<2:
                 continue
-            if any(letter.lower() not in list(_letters) + [_pad] + list(_punctuation) for letter in file_paths_and_text[i][text_index]) or len(file_paths_and_text[i][text_index]) == 0:
+            if any(letter.lower() not in list(_letters) + [_pad] + list(_punctuation) for letter in filepaths_and_text[i][text_index]) or len(filepaths_and_text[i][text_index]) == 0:
                 continue
             original_text = filepaths_and_text[i][args.text_index]
             cleaned_text = text._clean_text(original_text, args.text_cleaners)
             filepaths_and_text[i][args.text_index] = cleaned_text
-            result.append(file_paths_and_text[i].copy())
+            result.append(filepaths_and_text[i].copy())
 
         new_filelist = filelist + "." + args.out_extension
         with open(new_filelist, "w", encoding="utf-8") as f:
