@@ -179,19 +179,20 @@ class TextAudioCollateWithPath:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--weights_path", default="./pretrained_ljs.pth")
+    parser.add_argument("--weights_path", default="/content/drive/MyDrive/Stage-HEXA/speech-synthesis/modelisation/NaturalSpeech/pretrained_vctk.pth")
     parser.add_argument(
         "--filelists",
         nargs="+",
         default=[
-            "filelists/ljs_audio_text_val_filelist.txt",
-            "filelists/ljs_audio_text_test_filelist.txt",
+            "filelists/train_transcripts.txt.cleaned",
+            "filelists/test_transcripts.txt.cleaned",
+            "filelists/val_transcripts.txt.cleaned"
         ],
     )
 
     args = parser.parse_args()
 
-    hps = utils.get_hparams_from_file("./configs/ljs_base.json")
+    hps = utils.get_hparams_from_file("./configs/vctk_base.json")
     net_g = SynthesizerTrn(
         len(symbols),
         hps.data.filter_length // 2 + 1,
