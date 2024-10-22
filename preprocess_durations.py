@@ -179,7 +179,7 @@ class TextAudioCollateWithPath:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--weights_path", default="/content/drive/MyDrive/Stage-HEXA/speech-synthesis/modelisation/NaturalSpeech/pretrained_vctk.pth")
+    parser.add_argument("--weights_path", default="/content/drive/MyDrive/Stage-HEXA/speech-synthesis/modelisation/NaturalSpeech/pretrained_ljs.pth")
     parser.add_argument(
         "--filelists",
         nargs="+",
@@ -192,7 +192,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    hps = utils.get_hparams_from_file("./configs/vctk_base.json")
+    hps = utils.get_hparams_from_file("./configs/malagasy.json")
     net_g = SynthesizerTrn(
         len(symbols),
         hps.data.filter_length // 2 + 1,
