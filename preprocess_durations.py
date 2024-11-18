@@ -77,7 +77,7 @@ class TextAudioLoaderWithPath(torch.utils.data.Dataset):
     def get_audio_text_pair(self, audiopath_and_text):
         # separate filename and text
         audiopath, text = audiopath_and_text[0], audiopath_and_text[1]
-        text = self.get_text(text)malagasy
+        text = self.get_text(text)
         spec, wav = self.get_audio(audiopath)
         return (text, spec, wav, audiopath)
 
