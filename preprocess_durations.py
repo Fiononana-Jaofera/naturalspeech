@@ -77,7 +77,7 @@ class TextAudioLoaderWithPath(torch.utils.data.Dataset):
     def get_audio_text_pair(self, audiopath_and_text):
         # separate filename and text
         audiopath, text = audiopath_and_text[0], audiopath_and_text[1]
-        text = self.get_text(text)
+        text = self.get_text(text)malagasy
         spec, wav = self.get_audio(audiopath)
         return (text, spec, wav, audiopath)
 
@@ -85,7 +85,7 @@ class TextAudioLoaderWithPath(torch.utils.data.Dataset):
         audio, sampling_rate = load_wav_to_torch(filename)
         if sampling_rate != self.sampling_rate:
             raise ValueError(
-                "{} {} SR doesn't match target {} SR".format(
+                "{} SR doesn't match target {} SR".format(
                     sampling_rate, self.sampling_rate
                 )
             )
@@ -195,12 +195,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    hps = utils.get_hparams_from_file("./configs/malagasy.json")
+    hps = utils.get_hparams_from_file("./configs/ljs_base.json")
     net_g = SynthesizerTrn(
         len(symbols),
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
-        **hps.model,
+        **hps.models,
     ).cuda()
     _ = utils.load_checkpoint(args.weights_path, net_g, None)
     net_g.eval()
