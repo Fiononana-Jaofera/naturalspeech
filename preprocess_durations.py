@@ -195,12 +195,12 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    hps = utils.get_hparams_from_file("./configs/ljs_base.json")
+    hps = utils.get_hparams_from_file("./configs/malagasy.json")
     net_g = SynthesizerTrn(
         len(symbols),
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
-        **hps.models,
+        **hps.model,
     ).cuda()
     _ = utils.load_checkpoint(args.weights_path, net_g, None)
     net_g.eval()
