@@ -202,6 +202,7 @@ if __name__ == "__main__":
         hps.train.segment_size // hps.data.hop_length,
         **hps.models,
     ).cuda()
+    net_g.enc_p.emb = nn.Embedding(178, 192) 
     _ = utils.load_checkpoint(args.weights_path, net_g, None)
     net_g.eval()
 
