@@ -200,7 +200,7 @@ if __name__ == "__main__":
         len(symbols),
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
-        **hps.model,
+        **hps.models,
     ).cuda()
     _ = utils.load_checkpoint(args.weights_path, net_g, None)
     net_g.eval()
