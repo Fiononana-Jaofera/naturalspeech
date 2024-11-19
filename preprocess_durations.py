@@ -182,7 +182,7 @@ class TextAudioCollateWithPath:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--weights_path", default="/content/drive/MyDrive/Stage-HEXA/speech-synthesis/modelisation/NaturalSpeech/pretrained_ljs.pth")
+    parser.add_argument("--weights_path", default="/content/drive/MyDrive/Stage-HEXA/speech-synthesis/modelisation/NaturalSpeech/pretrained_vctk.pth")
     parser.add_argument(
         "--filelists",
         nargs="+",
