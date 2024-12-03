@@ -11,6 +11,5 @@ _letters_ipa = list(set(_letters_ipa))
 # Export all symbols:
 symbols = [_pad] + list(_punctuation) + list(_letters) + _letters_ipa
 symbols = list(set(symbols))
-print(symbols)
 # Special symbol ids
 SPACE_ID = symbols.index(" ")

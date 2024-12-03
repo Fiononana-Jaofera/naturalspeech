@@ -6,7 +6,7 @@ from utils.utils import load_filepaths_and_text
 if __name__ == "__main__":
     _pad = "_"
     _punctuation = ';:,.!?-"«»“”\' '
-    _letters = "abdefghijklmnoôprstvyz"
+    _letters = "àabdefghijklmnoôprstvyz"
     parser = argparse.ArgumentParser()
     parser.add_argument("--out_extension", default="cleaned")
     parser.add_argument("--text_index", default=1, type=int)
