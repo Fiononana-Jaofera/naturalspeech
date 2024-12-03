@@ -5,11 +5,12 @@ Defines the set of symbols used in text input to the model.
 """
 _pad = "_"
 _punctuation = ';:,.!?-"«»“”\' '
-_letters = "abdefghijklmnoôprstvyz"
-_letters_ipa = "d͡z#u#t͡s#ⁿt͡s#ⁿd͡z#ʈ͡ʂ#ɖ͡ʐ#ⁿʈ͡ʂ#ⁿɖ͡ʐ#ᵑk#ᵑɡ#ᵐp#ᵐb#ⁿt#ⁿd#ɵ"
-
+_letters = "àabdefghijklmnoôprstvyz"
+_letters_ipa = "d͡zut͡sⁿt͡sⁿd͡zʈ͡ʂɖ͡ʐⁿʈ͡ʂⁿɖ͡ʐᵑkᵑɡᵐpᵐbⁿtⁿdɵ"
+_letters_ipa = list(set(_letters_ipa))
 # Export all symbols:
-symbols = [_pad] + list(_punctuation) + list(_letters) + _letters_ipa.split("#")
-
+symbols = [_pad] + list(_punctuation) + list(_letters) + _letters_ipa
+symbols = list(set(symbols))
+print(symbols)
 # Special symbol ids
 SPACE_ID = symbols.index(" ")

@@ -3,6 +3,7 @@ import re
 
 prf = Profile(
     {'Grapheme': 'a', 'mapping': 'a'},
+    {'Grapheme': 'à', 'mapping': 'ɑ'},
     {'Grapheme': 'b', 'mapping': 'b'},
     {'Grapheme': 'd', 'mapping': 'd'},
     {'Grapheme': 'e', 'mapping': 'e'},
@@ -44,4 +45,4 @@ t = Tokenizer(profile=prf)
 def phonemize(text, preserve_punctuation):
   if not preserve_punctuation:
     text = re.sub(r'[;:,.!?\-"«»“”\']+', '', text).strip()
-  return t(text, column='mapping', separator='_', segment_separator='#')
+  return t(text, column='mapping', separator=' ', segment_separator='')
