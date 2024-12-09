@@ -18,13 +18,13 @@ import random
 import numpy as np
 import torch
 import torch.utils.data
+import torch.nn as nn
+
 
 import commons
 from mel_processing import spectrogram_torch
 from utils import load_wav_to_torch, load_filepaths_and_text
 from text import text_to_sequence, cleaned_text_to_sequence
-import torch.nn as nn
-
 
 import json
 
@@ -66,9 +66,6 @@ class TextAudioLoaderWithPath(torch.utils.data.Dataset):
 
         audiopaths_and_text_new = []
         lengths = []
-        for i in self.audiopaths_and_text:
-            if len(i)!=2:
-                print(i)
         for audiopath, text in self.audiopaths_and_text:
             if self.min_text_len <= len(text) and len(text) <= self.max_text_len:
                 audiopaths_and_text_new.append([audiopath, text])
@@ -87,7 +84,7 @@ class TextAudioLoaderWithPath(torch.utils.data.Dataset):
         audio, sampling_rate = load_wav_to_torch(filename)
         if sampling_rate != self.sampling_rate:
             raise ValueError(
-                "{} SR doesn't match target {} SR".format(
+                "{} {} SR doesn't match target {} SR".format(
                     sampling_rate, self.sampling_rate
                 )
             )
@@ -137,11 +134,11 @@ class TextAudioCollateWithPath:
         """
         # Right zero-pad all one-hot text sequences to max input length
         _, ids_sorted_decreasing = torch.sort(
-            torch.LongTensor([x[1].size(1) for x in batch]), dim=0, descending=True
+            torch.LongTensor([x[1].size(0) for x in batch]), dim=0, descending=True
         )
 
         max_text_len = max([len(x[0]) for x in batch])
-        max_spec_len = max([x[1].size(1) for x in batch])
+        max_spec_len = max([x[1].size(0) for x in batch])
         max_wav_len = max([x[2].size(1) for x in batch])
 
         text_lengths = torch.LongTensor(len(batch))
@@ -162,8 +159,8 @@ class TextAudioCollateWithPath:
             text_lengths[i] = text.size(0)
 
             spec = row[1]
-            spec_padded[i, :, : spec.size(1)] = spec
-            spec_lengths[i] = spec.size(1)
+            spec_padded[i, :, : spec.size(0)] = spec
+            spec_lengths[i] = spec.size(0)
 
             wav = row[2]
             wav_padded[i, :, : wav.size(1)] = wav
@@ -196,6 +193,8 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
     hps = utils.get_hparams_from_file("./configs/malagasy.json")
     net_g = SynthesizerTrn(
@@ -203,9 +202,10 @@ if __name__ == "__main__":
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
         **hps.models,
-    ).cuda()
-    net_g.enc_p.emb = nn.Embedding(178, 192) 
+    )
+    net_g.enc_p.emb = nn.Embedding(178, 192).to(device) 
     _ = utils.load_checkpoint(args.weights_path, net_g, None)
+    net_g = net_g.to(device)
     net_g.eval()
 
     print(args.filelists)
@@ -232,9 +232,9 @@ if __name__ == "__main__":
                 y_lengths,
                 paths,
             ) in enumerate(dataloader):
-                x, x_lengths = x.cuda(0), x_lengths.cuda(0)
-                spec, spec_lengths = spec.cuda(0), spec_lengths.cuda(0)
-                y, y_lengths = y.cuda(0), y_lengths.cuda(0)
+                x, x_lengths = x.to(device), x_lengths.to(device)
+                spec, spec_lengths = spec.to(device), spec_lengths.to(device)
+                y, y_lengths = y.to(device), y_lengths.to(device)
                 (path,) = paths
 
                 (
@@ -246,7 +246,6 @@ if __name__ == "__main__":
                     z_mask,
                     (z, z_p, m_p, logs_p, m_q, logs_q),
                 ) = net_g(x, x_lengths, spec, spec_lengths)
-
                 w = attn.sum(2).flatten()
                 x = x.flatten()
 
