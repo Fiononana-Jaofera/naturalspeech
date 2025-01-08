@@ -193,7 +193,8 @@ if __name__ == "__main__":
 
     hps = utils.get_hparams_from_file("./configs/ljs_base.json")
     net_g = SynthesizerTrn(
-        len(symbols),
+        # len(symbols),
+        178,
         hps.data.filter_length // 2 + 1,
         hps.train.segment_size // hps.data.hop_length,
         **hps.model,
