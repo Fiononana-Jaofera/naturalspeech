@@ -131,6 +131,9 @@ class TextAudioCollateWithPath:
         batch: [text_normalized, spec_normalized, wav_normalized]
         """
         # Right zero-pad all one-hot text sequences to max input length
+        for x in batch:
+            print(f"x[1]: {x[1]}, x[1].shape: {x[1].shape}")
+
         _, ids_sorted_decreasing = torch.sort(
             torch.LongTensor([x[1].size(1) for x in batch]), dim=0, descending=True
         )
@@ -207,10 +210,11 @@ if __name__ == "__main__":
     os.makedirs("durations", exist_ok=True)
 
     for filelist in args.filelists:
-        dataset = TextAudioLoaderWithPath(filelist, hps.data)
+        dataset = w(filelist, hps.data)
+
         dataloader = DataLoader(
             dataset,
-            batch_size=1,
+            batch_size=64,
             shuffle=False,
             pin_memory=False,
             collate_fn=TextAudioCollateWithPath(),
