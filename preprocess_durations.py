@@ -210,7 +210,7 @@ if __name__ == "__main__":
     os.makedirs("durations", exist_ok=True)
 
     for filelist in args.filelists:
-        dataset = w(filelist, hps.data)
+        dataset = TextAudioLoaderWithPath(filelist, hps.data)
 
         dataloader = DataLoader(
             dataset,
