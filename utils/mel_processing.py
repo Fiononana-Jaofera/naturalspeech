@@ -80,9 +80,10 @@ def spectrogram_torch(y, n_fft, sampling_rate, hop_size, win_size, center=False)
         pad_mode="reflect",
         normalized=False,
         onesided=True,
+        return_complex=True
     )
 
-    spec = torch.sqrt(spec.pow(2).sum(-1) + 1e-6)
+    spec = torch.abs(spec)
     return spec
 
 
@@ -151,9 +152,10 @@ def mel_spectrogram_torch(
         pad_mode="reflect",
         normalized=False,
         onesided=True,
+        return_complex=True
     )
 
-    spec = torch.sqrt(spec.pow(2).sum(-1) + 1e-6)
+    spec = torch.abs(spec)
 
     spec = torch.matmul(mel_basis[fmax_dtype_device], spec)
     spec = spectral_normalize_torch(spec)
