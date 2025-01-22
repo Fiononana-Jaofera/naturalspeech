@@ -67,6 +67,7 @@ def main():
             hps,
         ),
     )
+    dist.destroy_process_group()
 
 
 def run(rank, n_gpus, hps):
@@ -96,22 +97,26 @@ def run(rank, n_gpus, hps):
     collate_fn = TextAudioCollateWithDuration()
     train_loader = DataLoader(
         train_dataset,
-        num_workers=8,
+        # num_workers=8,
+        num_workers=2,
         shuffle=False,
         pin_memory=False,
         collate_fn=collate_fn,
         batch_sampler=train_sampler,
+        persistent_workers=False
     )
     if rank == 0:
         eval_dataset = TextAudioLoaderWithDuration(hps.data.validation_files, hps.data)
         eval_loader = DataLoader(
             eval_dataset,
-            num_workers=8,
+            # num_workers=8,
+            num_workers=2,
             shuffle=False,
             batch_size=hps.train.batch_size,
             pin_memory=False,
             drop_last=False,
             collate_fn=collate_fn,
+            persistent_workers=False
         )
 
     net_g = SynthesizerTrn(
