@@ -67,7 +67,6 @@ def main():
             hps,
         ),
     )
-    dist.destroy_process_group()
 
 
 def run(rank, n_gpus, hps):
@@ -549,3 +548,6 @@ def evaluate(hps, generator, eval_loader, writer_eval, epoch=0):
 
 if __name__ == "__main__":
     main()
+
+if dist.is_initialized():
+    dist.destroy_process_group()
