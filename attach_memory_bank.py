@@ -192,4 +192,4 @@ if __name__ == "__main__":
     save_checkpoint(net_g, optimizer, lr, iterations, save_path)
 
     # test
-    print(memory_bank(torch.randn((2, 192, 12))).shape)
+    print("test: ",memory_bank(torch.randn((2, 192, 12))).shape)
