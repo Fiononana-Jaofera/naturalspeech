@@ -129,7 +129,7 @@ def get_zs(net_g, dataloader, num_samples=0):
 def k_means(zs):
     X = torch.cat(zs, dim=1).transpose(0, 1).numpy()
     print(X.shape)
-    kmeans = KMeans(n_clusters=1000, random_state=0, n_init="auto").fit(X)
+    kmeans = KMeans(n_clusters=1000, init='random', random_state=0, n_init="auto", verbose=1).fit(X)
     print(kmeans.cluster_centers_.shape)
 
     return kmeans.cluster_centers_
@@ -192,4 +192,4 @@ if __name__ == "__main__":
     save_checkpoint(net_g, optimizer, lr, iterations, save_path)
 
     # test
-    print("test: ",memory_bank(torch.randn((2, 192, 12))).shape)
+    print(memory_bank(torch.randn((2, 192, 12))).shape)

@@ -104,14 +104,15 @@ def plot_spectrogram_to_numpy(spectrogram):
     global MATPLOTLIB_FLAG
     if not MATPLOTLIB_FLAG:
         import matplotlib
-
-        matplotlib.use("Agg")
+        matplotlib.use("Agg")  # Utiliser Agg pour le rendu sans interface graphique
         MATPLOTLIB_FLAG = True
         mpl_logger = logging.getLogger("matplotlib")
         mpl_logger.setLevel(logging.WARNING)
+
     import matplotlib.pylab as plt
     import numpy as np
 
+    # Créer une figure
     fig, ax = plt.subplots(figsize=(10, 2))
     im = ax.imshow(spectrogram, aspect="auto", origin="lower", interpolation="none")
     plt.colorbar(im, ax=ax)
@@ -119,12 +120,16 @@ def plot_spectrogram_to_numpy(spectrogram):
     plt.ylabel("Channels")
     plt.tight_layout()
 
+    # Dessiner la figure et extraire les données
     fig.canvas.draw()
-    data = np.frombuffer(fig.canvas.export_rgba(), dtype=np.uint8)
-    data = data.reshape(fig.canvas.get_width_height()[::-1] + (3,))
-    plt.close()
-    return data
+    data = np.frombuffer(fig.canvas.tostring_argb(), dtype=np.uint8)  # Utiliser tostring_argb()
+    width, height = fig.canvas.get_width_height()
+    data = data.reshape(height, width, 4)  # Inclut un canal alpha (RGBA)
 
+    # Réorganiser les canaux ARGB en RGB
+    data = data[:, :, 1:]  # Ignore le canal alpha
+    plt.close(fig)
+    return data
 
 def plot_alignment_to_numpy(alignment, info=None):
     global MATPLOTLIB_FLAG
