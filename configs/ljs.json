@@ -24,7 +24,7 @@
   "data": {
     "training_files":"filelists/train_transcripts.txt.cleaned",
     "validation_files":"filelists/val_transcripts.txt.cleaned",
-    "text_cleaners":["english_cleaners2"],
+    "text_cleaners":["malagasy_cleaners"],
     "max_wav_value": 32768.0,
     "sampling_rate": 22050,
     "filter_length": 1024,
