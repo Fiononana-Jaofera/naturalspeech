@@ -21,7 +21,7 @@ def get_text(text, hps):
 
 
 hps = utils.get_hparams_from_file('configs/ljs.json')
-model_path = './logs/first_train/G_0.pth' # you should change model_path
+model_path = './logs/first_train/G_1500.pth' # you should change model_path
 text = 'manahoana tompoko' # and text
 
 net_g = SynthesizerTrn(
